@@ -9,7 +9,8 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Footer from './components/Footer';
 import { ThemeProvider } from './context/ThemeContext';
-
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage'; 
 function App() {
   return (
     <ThemeProvider>
@@ -24,6 +25,9 @@ function App() {
               <Route path="/job/:id" element={<JobDetail />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
             </Routes>
           </main>
           <Footer />
