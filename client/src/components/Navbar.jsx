@@ -3,21 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Menu, X, Briefcase, User, Moon, Sun, LogIn, UserPlus } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 // Assume you have an AuthContext to get user info and logout function
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
-// --- Mock AuthContext for demonstration ---
-// In your actual app, you would import this from your context file.
-const useAuth = () => {
-  // To test different states, change this mock user object.
-  // Set to null to see the "guest" view.
-  const [user, setUser] = useState({ name: 'Prashant', role: 'admin' }); 
-  const logout = () => {
-    console.log("Logging out...");
-    setUser(null);
-  };
-  return { isAuthenticated: !!user, user, logout };
-};
-// --- End of Mock AuthContext ---
 
 
 const Navbar = () => {

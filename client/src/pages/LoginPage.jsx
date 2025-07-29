@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogIn } from 'lucide-react';
-
+import { useAuth } from '../context/AuthContext';
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+   const { login } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
