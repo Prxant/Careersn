@@ -1,28 +1,48 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import axios from 'axios'; // 1. Import axios
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(''); // 2. Add state for error messages
   const navigate = useNavigate();
 
+  // 3. This is the new, corrected login handler
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(''); // Clear previous errors
 
-    // Simulate API call
-    setTimeout(() => {
-      if (email === 'admin@careersn.com' && password === 'admin123') {
-        localStorage.setItem('careersn-admin-token', 'mock-jwt-token');
-        navigate('/admin/dashboard');
-      } else {
-        alert('Invalid credentials. Use admin@careersn.com / admin123');
+    try {
+      // Make a REAL API call to your backend
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        { email, password }
+      );
+
+      // Check if the logged-in user is an admin
+      if (response.data.user.role !== 'admin') {
+        setError('Access denied. This is not an admin account.');
+        setIsLoading(false);
+        return;
       }
+
+      // If login is successful, store the token and navigate
+      localStorage.setItem('careersn-admin-token', response.data.token);
+      navigate('/admin/dashboard');
+
+    } catch (err) {
+      // If the server sends an error, display it
+      console.error("Login failed:", err.response);
+      const message = err.response?.data?.msg || 'Login failed. Please try again.';
+      setError(message);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -39,12 +59,21 @@ const AdminLogin = () => {
               <h2 className="text-2xl font-bold">Admin Login</h2>
               <p className="text-base-content/70">Access the CareerSn admin panel</p>
             </div>
+            
+            {/* 4. Display the error message here */}
+            {error && (
+              <div className="alert alert-error mb-4">
+                <div>
+                  <AlertCircle className="h-6 w-6" />
+                  <span>{error}</span>
+                </div>
+              </div>
+            )}
 
             <form onSubmit={handleLogin} className="space-y-4">
+              {/* Email and Password inputs remain the same */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
+                <label className="label"><span className="label-text">Email</span></label>
                 <div className="relative">
                   <input
                     type="email"
@@ -57,11 +86,8 @@ const AdminLogin = () => {
                   <User className="h-5 w-5 absolute left-3 top-3.5 text-base-content/40" />
                 </div>
               </div>
-
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
+                <label className="label"><span className="label-text">Password</span></label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -72,21 +98,11 @@ const AdminLogin = () => {
                     required
                   />
                   <Lock className="h-5 w-5 absolute left-3 top-3.5 text-base-content/40" />
-                  <button
-                    type="button"
-                    className="absolute right-3 top-3.5 text-base-content/40 hover:text-base-content"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
+                  <button type="button" className="absolute right-3 top-3.5" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
-                <label className="label">
-                  <span className="label-text-alt text-base-content/60">
-                    Demo credentials: admin@careersn.com / admin123
-                  </span>
-                </label>
               </div>
-
               <div className="form-control mt-6">
                 <button 
                   type="submit" 
@@ -97,15 +113,6 @@ const AdminLogin = () => {
                 </button>
               </div>
             </form>
-
-            <div className="divider">Demo Info</div>
-            <div className="alert alert-info">
-              <div>
-                <h4 className="font-semibold">Demo Credentials:</h4>
-                <p className="text-sm">Email: admin@careersn.com</p>
-                <p className="text-sm">Password: admin123</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

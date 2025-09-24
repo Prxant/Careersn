@@ -2,11 +2,11 @@ export const mockCareers = [
   {
     id: '1',
     title: 'Senior Frontend Developer',
-    company: 'TechCorp Inc.',
-    location: 'San Francisco, CA',
+    company: 'Navsun Solutions',
+    location: 'Lucknow, Uttar Pradesh',
     type: 'Full-time',
     level: 'Senior',
-    salary: '$120,000 - $150,000',
+    salary: '18,00,000 - 25,00,000 per annum',
     description: 'We are looking for a passionate Senior Frontend Developer to join our dynamic team. You will be responsible for developing user-facing web applications using modern technologies like React, TypeScript, and Next.js.',
     requirements: [
       '5+ years of experience in frontend development',
@@ -26,26 +26,26 @@ export const mockCareers = [
     ],
     skills: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS', 'GraphQL'],
     benefits: [
-      'Competitive salary and equity package',
-      'Health, dental, and vision insurance',
+      'Competitive salary package',
+      'Provident Fund (PF) & Gratuity',
+      'Comprehensive health insurance',
       'Flexible work arrangements',
       'Professional development budget',
-      'Unlimited PTO',
-      'State-of-the-art equipment'
+      'Paid time off'
     ],
     image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
     postedDate: '2 days ago',
-    applicationDeadline: '2024-02-15',
+    applicationDeadline: '2025-10-15',
     category: 'Technology'
   },
   {
     id: '2',
     title: 'UX/UI Designer',
-    company: 'Design Studio Pro',
-    location: 'New York, NY',
+    company: 'PixelCraft Studios',
+    location: 'Bengaluru, Karnataka',
     type: 'Full-time',
     level: 'Mid',
-    salary: '$85,000 - $110,000',
+    salary: '10,00,000 - 15,00,000 per annum',
     description: 'Join our creative team as a UX/UI Designer where you\'ll design intuitive and beautiful user experiences for our clients\' digital products.',
     requirements: [
       '3+ years of UX/UI design experience',
@@ -68,23 +68,23 @@ export const mockCareers = [
       'Creative and collaborative work environment',
       'Health and wellness programs',
       'Flexible schedule',
-      'Design conference attendance',
-      'Modern office space',
+      'Annual budget for design conferences',
+      'Modern office space in a prime location',
       'Team building activities'
     ],
     image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
     postedDate: '1 week ago',
-    applicationDeadline: '2024-02-20',
+    applicationDeadline: '2025-10-20',
     category: 'Design'
   },
   {
     id: '3',
     title: 'Data Scientist',
-    company: 'Analytics Solutions',
+    company: 'DataVerse Insights',
     location: 'Remote',
     type: 'Full-time',
     level: 'Mid',
-    salary: '$95,000 - $125,000',
+    salary: '15,00,000 - 22,00,000 per annum',
     description: 'We\'re seeking a Data Scientist to help us extract insights from complex datasets and build machine learning models that drive business decisions.',
     requirements: [
       'Master\'s or PhD in Data Science, Statistics, or related field',
@@ -108,22 +108,22 @@ export const mockCareers = [
       'Competitive compensation',
       'Learning and development opportunities',
       'Flexible working hours',
-      'Health insurance',
+      'Health insurance for you and your family',
       'Annual team retreats'
     ],
     image: 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=800',
     postedDate: '3 days ago',
-    applicationDeadline: '2024-02-25',
+    applicationDeadline: '2025-10-25',
     category: 'Data Science'
   },
   {
     id: '4',
     title: 'Marketing Manager',
-    company: 'GrowthCo',
-    location: 'Austin, TX',
+    company: 'MarketMinds India',
+    location: 'Gurugram, Haryana',
     type: 'Full-time',
     level: 'Senior',
-    salary: '$80,000 - $100,000',
+    salary: '12,00,000 - 18,00,000 per annum',
     description: 'Lead our marketing efforts and drive customer acquisition through innovative campaigns and strategic partnerships.',
     requirements: [
       '5+ years of marketing experience',
@@ -143,26 +143,26 @@ export const mockCareers = [
     ],
     skills: ['Digital Marketing', 'Analytics', 'Project Management', 'Leadership', 'Strategy'],
     benefits: [
-      'Performance-based bonuses',
+      'Performance-based Diwali bonus',
       'Health and dental insurance',
-      'Retirement savings plan',
+      'Retirement savings plan with PF',
       'Paid time off',
       'Professional development',
       'Casual work environment'
     ],
     image: 'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800',
     postedDate: '5 days ago',
-    applicationDeadline: '2024-03-01',
+    applicationDeadline: '2025-11-01',
     category: 'Marketing'
   },
   {
     id: '5',
     title: 'DevOps Engineer',
-    company: 'CloudTech Systems',
-    location: 'Seattle, WA',
+    company: 'InfraScale Technologies',
+    location: 'Hyderabad, Telangana',
     type: 'Full-time',
     level: 'Mid',
-    salary: '$105,000 - $130,000',
+    salary: '16,00,000 - 24,00,000 per annum',
     description: 'Join our infrastructure team to help build and maintain scalable, reliable systems that power our applications.',
     requirements: [
       '3+ years of DevOps or infrastructure experience',
@@ -182,26 +182,26 @@ export const mockCareers = [
     ],
     skills: ['AWS', 'Kubernetes', 'Docker', 'Terraform', 'Python'],
     benefits: [
-      'Stock options',
+      'Stock options (ESOPs)',
       'Comprehensive health coverage',
       'Flexible work arrangements',
       'Education reimbursement',
-      'Tech stipend',
+      'Internet and power backup allowance',
       'Gym membership'
     ],
     image: 'https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=800',
     postedDate: '1 week ago',
-    applicationDeadline: '2024-02-28',
+    applicationDeadline: '2025-10-28',
     category: 'Technology'
   },
   {
     id: '6',
     title: 'Product Manager',
-    company: 'InnovateLabs',
-    location: 'Boston, MA',
+    company: 'ProductGenie',
+    location: 'Pune, Maharashtra',
     type: 'Full-time',
     level: 'Senior',
-    salary: '$115,000 - $140,000',
+    salary: '20,00,000 - 30,00,000 per annum',
     description: 'Drive product strategy and execution for our suite of innovative software products used by millions of users worldwide.',
     requirements: [
       '4+ years of product management experience',
@@ -221,16 +221,16 @@ export const mockCareers = [
     ],
     skills: ['Product Strategy', 'Analytics', 'Agile', 'Leadership', 'Market Research'],
     benefits: [
-      'Equity participation',
+      'Equity participation (ESOPs)',
       'Premium health insurance',
       'Flexible PTO policy',
       'Professional development budget',
       'Remote work options',
-      'Catered meals'
+      'Catered meals in office'
     ],
     image: 'https://images.pexels.com/photos/3184431/pexels-photo-3184431.jpeg?auto=compress&cs=tinysrgb&w=800',
     postedDate: '4 days ago',
-    applicationDeadline: '2024-03-05',
+    applicationDeadline: '2025-11-05',
     category: 'Product'
   }
 ];

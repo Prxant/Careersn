@@ -1,20 +1,19 @@
-// client/src/pages/LoginPage.jsx
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-   const { login } = useAuth();
+  
+  const { login } = useAuth(); // 1. Get the global login function from your context
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
   const navigate = useNavigate();
+
   const { email, password } = formData;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,22 +24,23 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const userToLogin = { email, password };
-      const config = { headers: { 'Content-Type': 'application/json' } };
-      const body = JSON.stringify(userToLogin);
+      // 2. This is the corrected, simplified API call.
+      // Pass the { email, password } object directly. Axios will handle the rest.
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`, 
+        { email, password }
+      );
+      
+      // 3. Use the login function from AuthContext to update the app's global state.
+      login(res.data);
+      
+      // 4. Navigate to the main jobs page after successful login.
+      navigate('/jobs'); 
 
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, body, config);
-      
-      // For now, we'll just show an alert and store the token.
-      // A full solution uses Context API to manage this globally.
-      alert('Login successful!');
-      localStorage.setItem('token', res.data.token); // Store token
-      
-      console.log('Login successful:', res.data);
-      setLoading(false);
-      navigate('/'); // Redirect to homepage after login
     } catch (err) {
+      // Correctly display the actual error message from the server.
       setError(err.response?.data?.msg || 'An error occurred. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
@@ -80,3 +80,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+

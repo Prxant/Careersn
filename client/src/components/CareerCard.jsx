@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, DollarSign, Users } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, IndianRupee, Users, Calendar, Briefcase, CheckCircle } from 'lucide-react';
 
 const CareerCard = ({ career }) => {
   return (
@@ -30,7 +30,7 @@ const CareerCard = ({ career }) => {
             <span>{career.location}</span>
           </div>
           <div className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4 text-success" />
+            <IndianRupee className="h-4 w-4 text-success" />
             <span>{career.salary}</span>
           </div>
           <div className="flex items-center gap-2">

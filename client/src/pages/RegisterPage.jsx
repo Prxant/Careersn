@@ -1,11 +1,7 @@
-// client/src/pages/RegisterPage.jsx
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserPlus } from 'lucide-react';
-// Assuming you have an AuthContext to handle login state
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext'; // 1. Import the useAuth hook
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +13,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
-  // const { login } = useAuth(); // Get login function from your context
+  const { login } = useAuth(); // 2. Get the login function from your context
 
   const { username, email, password } = formData;
 
@@ -36,24 +32,25 @@ const RegisterPage = () => {
 
     try {
       const newUser = { username, email, password };
-      const config = { headers: { 'Content-Type': 'application/json' } };
-      const body = JSON.stringify(newUser);
 
-      // IMPORTANT: Use your live backend URL from environment variables
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, body, config);
+      // 3. This is the corrected, simplified API call.
+      // Pass the 'newUser' object directly. Axios handles the rest.
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        newUser 
+      );
       
-      // After successful registration, log the user in
-      // login(res.data); // This would update your global state
+      // 4. After successful registration, automatically log the user in.
+      login(res.data);
       
-      console.log('Registration successful:', res.data);
-      alert('Registration successful! You are now logged in.');
+      // 5. Navigate to the main jobs page (or a dashboard).
+      navigate('/jobs');
 
-
-      setLoading(false);
-      navigate('/'); // Redirect to homepage after registration
     } catch (err) {
+      // The error from the server will now be correctly displayed.
       setError(err.response?.data?.msg || 'An error occurred. Please try again.');
-      setLoading(false);
+    } finally {
+        setLoading(false);
     }
   };
 

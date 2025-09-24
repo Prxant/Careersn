@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, DollarSign, Users, Calendar, Briefcase, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, IndianRupee, Users, Calendar, Briefcase, CheckCircle } from 'lucide-react';
 import { mockCareers } from '../data/mockData';
 
 const CareerDetail = () => {
@@ -55,7 +55,7 @@ const CareerDetail = () => {
                   <span>{career.location}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-success" />
+                  <IndianRupee className="h-4 w-4 text-success" /> 
                   <span>{career.salary}</span>
                 </div>
                 <div className="flex items-center gap-2">

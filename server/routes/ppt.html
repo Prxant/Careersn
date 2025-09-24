@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerSn: A Modern MERN Stack Job Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            min-height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            background-color: #ffffff;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            z-index: 10;
+        }
+        .slide-header {
+            width: 100%;
+            max-width: 1024px;
+            margin-bottom: 2rem;
+        }
+        .slide-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a; /* slate-900 */
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .slide-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            height: 4px;
+            background-color: #2563eb; /* blue-600 */
+            border-radius: 2px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0; /* slate-200 */
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 6px;
+            background-color: #2563eb; /* blue-600 */
+            z-index: 50;
+            transition: width 0.3s ease;
+        }
+        .nav-button {
+            position: fixed;
+            bottom: 2rem;
+            z-index: 20;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .nav-button:hover {
+            background-color: #1d4ed8;
+        }
+        .footer {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            font-size: 0.875rem;
+            color: #64748b; /* slate-500 */
+            z-index: 20;
+        }
+        .slide-counter {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.875rem;
+            color: #64748b; /* slate-500 */
+            z-index: 20;
+        }
+
+        /* Custom styles for diagram */
+        .flow-arrow {
+            position: relative;
+            margin: 0 1rem;
+        }
+        .flow-arrow::after {
+            content: '→';
+            font-size: 2rem;
+            color: #94a3b8; /* slate-400 */
+        }
+        
+        /* Styles for printing to PDF */
+        @media print {
+            body {
+                overflow-y: visible !important;
+            }
+            .slide {
+                display: flex !important;
+                position: relative !important;
+                opacity: 1 !important;
+                min-height: 100vh;
+                page-break-after: always; /* Each slide starts on a new page */
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .slide:last-of-type {
+                page-break-after: auto; /* Avoid extra blank page at the end */
+            }
+            .nav-button, .progress-bar, .footer, .slide-counter {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Progress Bar -->
+    <div id="progressBar" class="progress-bar"></div>
+
+    <!-- Slide 1: Title -->
+    <div id="slide-1" class="slide active text-center justify-center">
+        <div class="flex flex-col items-center gap-6">
+            <svg class="w-16 h-16 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 0 0-.12-1.03l-2.268-9.64a3.375 3.375 0 0 0-3.285-2.6H7.923a3.375 3.375 0 0 0-3.285 2.6L2.37 16.02a4.5 4.5 0 0 0-.12 1.03v.228m19.38 0a1.625 1.625 0 0 1-1.625 1.625H3.875A1.625 1.625 0 0 1 2.25 17.25m19.38 0v.713a2.625 2.625 0 0 1-2.625 2.625H5.25A2.625 2.625 0 0 1 2.625 18v-.713m19.005-6.713a.75.75 0 0 0-.75-.75H4.5a.75.75 0 0 0-.75.75v4.5a.75.75 0 0 0 .75.75h15a.75.75 0 0 0 .75-.75v-4.5Z" />
+            </svg>
+            <h1 class="text-6xl font-bold text-slate-900">CareerSn</h1>
+            <div class="w-24 h-1 bg-blue-600 rounded-full"></div>
+            <p class="text-2xl text-slate-600">A Modern MERN Stack Job Portal</p>
+            <p class="text-xl text-slate-500">Connecting Talent with Opportunity in India</p>
+            <div class="flex items-center gap-4 my-4">
+                <!-- Tech Icons -->
+                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><path fill="#61DAFB" d="M64 128c35.4 0 64-28.6 64-64S99.4 0 64 0 0 28.6 0 64s28.6 64 64 64z"/><path fill="#000" opacity=".2" d="M89.7 28.8L64 36.6 38.3 28.8c-2-1.5-4.5.3-4.5 2.6v55.8c0 2.3 2.5 4.1 4.5 2.6L64 82l25.7 7.8c2 1.5 4.5-.3 4.5-2.6V31.4c0-2.3-2.5-4.1-4.5-2.6z"/><path fill="#FFF" d="M64 76.5c-6.2 0-11.2-5-11.2-11.2s5-11.2 11.2-11.2 11.2 5 11.2 11.2-5 11.2-11.2 11.2zm0-18c-3.8 0-6.8 3-6.8 6.8s3 6.8 6.8 6.8 6.8-3 6.8-6.8-3.1-6.8-6.8-6.8z"/><path fill="#61DAFB" d="M64 45.2c-2.2 0-4.3.4-6.3 1.2l-6.9-19.4c1.1-.3 2.2-.5 3.3-.6 3.9-.4 7.8.4 11.3 2.3l-1.4 3.9c-2.1-1.2-4.4-1.8-6.8-1.8v.4h.8zm27.8 45.4c-1.1.3-2.2.5-3.3.6-3.9.4-7.8-.4-11.3-2.3l1.4-3.9c2.1 1.2 4.4 1.8 6.8 1.8v-.4h-.8c2.2 0 4.3-.4 6.3-1.2l6.9 19.4zm-55.6 0l6.9-19.4c-2-.8-4-1.2-6.3-1.2h-.8v.4c2.4 0 4.7.6 6.8 1.8l1.4-3.9c-3.5-1.9-7.4-2.7-11.3-2.3-1.1.1-2.2.3-3.3.6zm13.1-64.8c3.5 1.9 7.4 2.7 11.3 2.3 1.1-.1 2.2-.3 3.3-.6L69.7 47.6c-2 .8-4 1.2-6.3 1.2h-.8v-.4c2.4 0 4.7-.6 6.8-1.8l1.4 3.9zm27.4 19.4c-2-.8-4-1.2-6.3-1.2h-.8v.4c2.4 0 4.7.6 6.8 1.8l1.4-3.9c-3.5-1.9-7.4-2.7-11.3-2.3-1.1.1-2.2.3-3.3.6l6.9 19.4zm-27.4-19.4l-6.9 19.4c2 .8 4 1.2 6.3 1.2h.8v-.4c-2.4 0-4.7-.6-6.8-1.8l-1.4 3.9c3.5 1.9 7.4 2.7 11.3 2.3 1.1-.1 2.2-.3 3.3-.6z"/></svg></div>
+                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><path d="M64 0C28.6 0 0 28.6 0 64s28.6 64 64 64 64-28.6 64-64S99.4 0 64 0zm31.2 41.6c-3.1-2.2-6.3-4.2-9.4-6.2-3.1-2-6.1-4-9.2-5.9-3.1-1.9-6-3.7-9-5.4-3.2-1.9-6.4-3.6-9.6-5.1-1-.5-2-.8-3-1.2-.5-.2-.9-.3-1.2-.4-1.2-.4-2.4-.4-3.6-.2-1.2.2-2.4.6-3.6 1.2-.5.3-1 .6-1.5.9-.6.4-1.2.9-1.8 1.4-2.8 2.2-5.6 4.6-8.2 7.2-2.7 2.6-5.3 5.4-7.7 8.3-2.5 3-4.8 6-7 9.2-2.1 3.2-3.9 6.3-5.6 9.6-1.7 3.3-3.3 6.6-4.6 10-.2.6-.4 1.2-.6 1.8-.1.6-.2 1.2-.2 1.8 0 .6.1 1.2.2 1.8.1.6.2 1.2.4 1.8.6 2.4 1.4 4.8 2.4 7.2.9 2.4 2 4.8 3.2 7.2 1.2 2.4 2.6 4.7 4 7 1.5 2.3 3.1 4.5 4.8 6.7 1.7 2.2 3.5 4.3 5.4 6.3 1.9 2 3.9 3.9 6 5.8 2.1 1.9 4.2 3.6 6.4 5.2 2.2 1.6 4.5 3.1 6.8 4.5 1.1.7 2.3 1.4 3.4 2 .6.3 1.1.6 1.7.9.6.3 1.2.5 1.8.7.6.2 1.2.3 1.8.4.6.1 1.2.1 1.8 0 .6-.1 1.2-.2 1.8-.4.6-.2 1.2-.4 1.7-.7.6-.3 1.1-.6 1.7-.9 1.1-.6 2.3-1.3 3.4-2 2.3-1.4 4.6-2.9 6.8-4.5 2.2-1.6 4.3-3.3 6.4-5.2 2.1-1.9 4.1-3.8 6-5.8 1.9-2 3.7-4.1 5.4-6.3 1.7-2.2 3.3-4.4 4.8-6.7 1.4-2.3 2.8-4.6 4-7 1.2-2.4 2.3-4.8 3.2-7.2 1-2.4 1.8-4.8 2.4-7.2.2-.6.4-1.2.5-1.8.1-.6.2-1.2.2-1.8s-.1-1.2-.2-1.8c-.1-.6-.3-1.2-.5-1.8-1.1-4.7-2.9-9.3-5.2-13.7z" fill="#3C873A"/><path d="M64.2 36.2c-1.2-2.4-2.6-4.8-4.1-7.1-1.5-2.3-3.2-4.5-5-6.6-1.8-2.1-3.7-4.1-5.7-6-1.9-1.9-4-3.7-6.1-5.4-2.1-1.7-4.2-3.3-6.4-4.8-2.2-1.5-4.4-2.8-6.7-4-1.1-.6-2.3-1.2-3.4-1.7-.6-.3-1.1-.5-1.7-.7-.6-.2-1.2-.4-1.8-.5-.6-.1-1.2-.1-1.8 0-.6.1-1.2.2-1.7.4-.6.2-1.1.4-1.6.6s-1.1.6-1.6.9c-1.1.6-2.1 1.2-3.2 1.8-2.1 1.2-4.2 2.6-6.2 4.1-2 1.5-4 3.1-5.9 4.8-1.9 1.7-3.7 3.5-5.4 5.4-1.7 1.9-3.4 3.9-4.9 6-1.6 2.1-3.1 4.3-4.4 6.6-1.3 2.3-2.6 4.7-3.7 7.1-.2.5-.4 1-.6 1.5-.1.5-.2 1-.3 1.5s-.1 1-.1 1.5.1 1 .2 1.5c.1.5.2 1 .4 1.5.1.5.3 1 .5 1.5.5 2 1.1 4 1.8 6 .7 2 1.5 4 2.4 5.9 1.8 3.8 4.1 7.4 6.8 10.8 2.7 3.4 5.8 6.5 9.2 9.4 3.4 2.9 7.1 5.4 11 7.6 3.9 2.2 8 4 12.2 5.4.5.2 1 .3 1.5.4.5.1 1 .2 1.5.2s1-.1 1.5-.2c.5-.1 1-.3 1.5-.4 4.2-1.4 8.3-3.2 12.2-5.4 3.9-2.2 7.6-4.7 11-7.6 3.4-2.9 6.5-6 9.2-9.4 2.7-3.4 5-7 6.8-10.8.9-1.9 1.7-3.9 2.4-5.9.7-2 1.3-4 1.8-6 .2-.5.4-1 .5-1.5.1-.5.3-1 .4-1.5.1-.5.2-1 .2-1.5s-.1-1-.1-1.5c-.1-.5-.2-1-.3-1.5-.1-.5-.3-1-.5-1.5z" fill="#FFF"/><path d="M64 16.1c-13.3 0-25.9 5.2-35.3 14.6l5.7 5.7C42.5 28.2 52.8 24 64 24s21.5 4.2 29.6 12.4l5.7-5.7C89.9 21.3 77.3 16.1 64 16.1z" fill="#4DB33D"/><path d="M37.3 64c0-14.7 11.9-26.7 26.7-26.7v-8C50.2 29.3 37.3 45.1 37.3 64z" fill="#589636"/></svg></div>
+                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#800080"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg></div>
+            </div>
+            <p class="text-lg font-medium text-slate-800">Presenter: Prashant Verma</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Problem & Solution -->
+    <div id="slide-2" class="slide">
+        <div class="w-full max-w-4xl mx-auto">
+            <div class="slide-header"><h1>The Problem & Our Solution</h1></div>
+            <div class="grid md:grid-cols-2 gap-8 text-left">
+                <div class="card">
+                    <h2 class="text-2xl font-bold text-blue-600 mb-4">The Challenge</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed">In today's competitive job market, finding a clean, fast, and user-friendly platform can be a challenge. Many existing portals are cluttered, slow, and offer a poor user experience.</p>
+                </div>
+                <div class="card">
+                    <h2 class="text-2xl font-bold text-green-600 mb-4">The Solution</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed">CareerSn is a full-stack web app built on the MERN stack to provide a seamless, modern, and localized experience for both job applicants and administrators in India.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Tech Stack -->
+    <div id="slide-3" class="slide">
+       <div class="w-full max-w-5xl mx-auto text-left">
+          <div class="slide-header"><h1>Technology Stack</h1></div>
+          <div class="grid md:grid-cols-3 gap-8">
+              <div class="card">
+                  <h3 class="text-xl font-bold text-slate-800 mb-4">Frontend</h3>
+                  <ul class="space-y-3 text-slate-600">
+                      <li class="flex items-center"><span class="text-blue-500 mr-2">◆</span>React & Vite</li>
+                      <li class="flex items-center"><span class="text-blue-500 mr-2">◆</span>Tailwind CSS</li>
+                      <li class="flex items-center"><span class="text-blue-500 mr-2">◆</span>Axios for API Calls</li>
+                  </ul>
+              </div>
+              <div class="card">
+                  <h3 class="text-xl font-bold text-slate-800 mb-4">Backend</h3>
+                   <ul class="space-y-3 text-slate-600">
+                      <li class="flex items-center"><span class="text-green-500 mr-2">◆</span>Node.js & Express.js</li>
+                      <li class="flex items-center"><span class="text-green-500 mr-2">◆</span>RESTful API</li>
+                  </ul>
+              </div>
+              <div class="card">
+                  <h3 class="text-xl font-bold text-slate-800 mb-4">Database & Security</h3>
+                   <ul class="space-y-3 text-slate-600">
+                      <li class="flex items-center"><span class="text-purple-500 mr-2">◆</span>MongoDB & Mongoose</li>
+                      <li class="flex items-center"><span class="text-purple-500 mr-2">◆</span>JWT (JSON Web Tokens)</li>
+                      <li class="flex items-center"><span class="text-purple-500 mr-2">◆</span>bcryptjs for Hashing</li>
+                  </ul>
+              </div>
+          </div>
+       </div>
+    </div>
+    
+    <!-- Slide 4: User-Centric Experience -->
+    <div id="slide-4" class="slide">
+        <div class="w-full max-w-6xl mx-auto text-left">
+            <div class="slide-header"><h1>User-Centric Experience</h1></div>
+            <p class="text-slate-500 text-lg mb-8 max-w-4xl">Key features designed to provide job seekers with a seamless and intuitive experience:</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card text-center"><h3 class="font-bold mb-2">Secure Authentication</h3><p class="text-sm text-slate-600">User registration and login protected with JWT and password hashing for maximum security.</p></div>
+                <div class="card text-center"><h3 class="font-bold mb-2">Dynamic Job Browsing</h3><p class="text-sm text-slate-600">Browse through job listings fetched live from our database with real-time updates.</p></div>
+                <div class="card text-center"><h3 class="font-bold mb-2">Detailed Job View</h3><p class="text-sm text-slate-600">Comprehensive job details including responsibilities, requirements, and company information.</p></div>
+                <div class="card text-center"><h3 class="font-bold mb-2">Fully Responsive</h3><p class="text-sm text-slate-600">Access CareerSn from any device - desktop, tablet, or mobile phone.</p></div>
+                <div class="card text-center"><h3 class="font-bold mb-2">India-Focused</h3><p class="text-sm text-slate-600">Localized for the Indian market with salaries in Rupees (₹) and local job locations.</p></div>
+                <div class="card text-center"><h3 class="font-bold mb-2">Fast Performance</h3><p class="text-sm text-slate-600">Built with modern technologies to ensure quick load times and smooth interactions.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Admin -->
+    <div id="slide-5" class="slide">
+        <div class="w-full max-w-5xl mx-auto text-left">
+            <div class="slide-header"><h1>Powerful Admin Management</h1></div>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-center">
+                <h3 class="text-xl font-bold text-blue-800">Secure Admin Dashboard</h3>
+                <p class="text-blue-700">Role-based authentication system with JWT token security.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Complete CRUD Functionality</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><div><b>Create:</b> Add new job listings with detailed information.</div></li>
+                        <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">✓</span><div><b>Read:</b> View all job listings and user statistics.</div></li>
+                        <li class="flex items-start"><span class="text-yellow-500 mr-3 mt-1">✓</span><div><b>Update:</b> Edit existing job details instantly.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 mt-1">✓</span><div><b>Delete:</b> Remove outdated job listings.</div></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold mb-4">Management Features</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center"><span class="text-purple-500 mr-3">✓</span>Centralized dashboard for complete overview.</li>
+                        <li class="flex items-center"><span class="text-purple-500 mr-3">✓</span>Real-time updates to site listings.</li>
+                        <li class="flex items-center"><span class="text-purple-500 mr-3">✓</span>Secure, role-based admin access controls.</li>
+                        <li class="flex items-center"><span class="text-purple-500 mr-3">✓</span>Responsive interface for management.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Architecture -->
+    <div id="slide-6" class="slide">
+        <div class="w-full max-w-6xl mx-auto text-left">
+            <div class="slide-header"><h1>Decoupled Architecture</h1></div>
+            <p class="text-slate-500 text-lg mb-8 max-w-4xl">CareerSn uses a fully decoupled architecture for better maintainability and scalability.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 w-full my-8">
+                <div class="card text-center p-4"><b>User</b><p class="text-sm">Seekers & Admins</p></div>
+                <div class="flow-arrow"></div>
+                <div class="card text-center p-4"><b>React Frontend</b><p class="text-sm">Hosted on Vercel</p></div>
+                <div class="flow-arrow"></div>
+                <div class="card text-center p-4"><b>REST API</b><p class="text-sm">HTTP Requests</p></div>
+                <div class="flow-arrow"></div>
+                <div class="card text-center p-4"><b>Node.js Backend</b><p class="text-sm">Hosted on Render</p></div>
+                <div class="flow-arrow"></div>
+                <div class="card text-center p-4"><b>MongoDB Atlas</b><p class="text-sm">Cloud Database</p></div>
+            </div>
+             <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8 max-w-3xl mx-auto">
+                <p class="text-blue-800 text-center"><b class="font-bold">Key Benefits:</b> This separation makes the project easier to manage, scale, and maintain.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 7: Live Demo -->
+    <div id="slide-7" class="slide">
+        <div class="w-full max-w-5xl mx-auto text-left">
+            <div class="slide-header"><h1>Live Demo</h1></div>
+            <p class="text-slate-500 text-lg mb-8 max-w-4xl">Explore the CareerSn interface with this interactive demonstration.</p>
+            <div class="bg-slate-800 rounded-lg p-8 my-8 text-center text-white">
+                <h2 class="text-4xl font-bold">Discover Your Dream Career</h2>
+                <p class="mt-2 text-slate-300">Connect with top employers and find your perfect job.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4">Job Seeker View</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li>✓ Browse all job listings.</li>
+                        <li>✓ View detailed job descriptions.</li>
+                        <li>✓ See salary in Rupees.</li>
+                    </ul>
+                </div>
+                 <div class="card">
+                    <h3 class="text-xl font-bold mb-4">Admin Dashboard</h3>
+                    <ul class="space-y-2 text-slate-600">
+                        <li>✓ Log in with admin credentials.</li>
+                        <li>✓ Create, update, and delete jobs.</li>
+                        <li>✓ See real-time updates.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 8: Deployment -->
+    <div id="slide-8" class="slide">
+        <div class="w-full max-w-6xl mx-auto text-left">
+            <div class="slide-header"><h1>Cloud Deployment</h1></div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Vercel</h3>
+                    <p class="text-slate-500 text-center mb-4">Frontend Hosting</p>
+                    <ul class="space-y-2">
+                        <li>✓ Hosts React frontend</li>
+                        <li>✓ High performance & global CDN</li>
+                        <li>✓ Automatic HTTPS and SSL</li>
+                        <li>✓ Seamless deployment from Git</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-center">Render</h3>
+                    <p class="text-slate-500 text-center mb-4">Backend Hosting</p>
+                     <ul class="space-y-2">
+                        <li>✓ Hosts Node.js/Express API</li>
+                        <li>✓ Automatic scaling</li>
+                        <li>✓ Built-in env variables</li>
+                        <li>✓ Custom domain with SSL</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-center">MongoDB Atlas</h3>
+                    <p class="text-slate-500 text-center mb-4">Database Hosting</p>
+                     <ul class="space-y-2">
+                        <li>✓ Cloud-hosted MongoDB</li>
+                        <li>✓ Automated backups & security</li>
+                        <li>✓ Scalable resources</li>
+                        <li>✓ Real-time data monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 9: Journey -->
+    <div id="slide-9" class="slide">
+        <div class="w-full max-w-5xl mx-auto text-left">
+            <div class="slide-header"><h1>Project Journey: Challenges & Learnings</h1></div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card bg-slate-50">
+                    <h3 class="text-xl font-bold mb-4">Challenges Faced</h3>
+                    <ul class="space-y-4">
+                        <li><b>Monorepo Configuration:</b> Configuring for seamless deployment.</li>
+                        <li><b>Authentication Setup:</b> Implementing secure, role-based auth with JWT.</li>
+                        <li><b>Deployment Workflow:</b> Coordinating across multiple cloud platforms.</li>
+                    </ul>
+                </div>
+                <div class="card bg-green-50">
+                    <h3 class="text-xl font-bold mb-4">Key Learnings</h3>
+                    <ul class="space-y-4">
+                        <li><b>Full-Stack Development:</b> Mastered end-to-end MERN stack development.</li>
+                        <li><b>Security Implementation:</b> Gained experience in secure auth systems.</li>
+                        <li><b>Cloud Deployment:</b> Learned multi-platform deployment.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Future -->
+    <div id="slide-10" class="slide">
+        <div class="w-full max-w-5xl mx-auto text-left">
+            <div class="slide-header"><h1>What's Next for CareerSn?</h1></div>
+            <p class="text-slate-500 text-lg mb-8 max-w-4xl">This is just the beginning! Here are the exciting features we're planning to implement next:</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="font-bold text-lg mb-2">Job Application Flow</h3>
+                    <p class="text-slate-600 mb-2">Enable users to apply directly through the platform.</p>
+                    <span class="text-sm bg-blue-100 text-blue-800 py-1 px-2 rounded">✓ Apply with a single click</span>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold text-lg mb-2">User Profiles</h3>
+                    <p class="text-slate-600 mb-2">Enhanced profiles with resume management.</p>
+                     <span class="text-sm bg-blue-100 text-blue-800 py-1 px-2 rounded">✓ Resume upload</span>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold text-lg mb-2">Advanced Search</h3>
+                    <p class="text-slate-600 mb-2">Powerful search and filtering options.</p>
+                     <span class="text-sm bg-blue-100 text-blue-800 py-1 px-2 rounded">✓ Salary & location filters</span>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold text-lg mb-2">Email Notifications</h3>
+                    <p class="text-slate-600 mb-2">Stay updated with personalized job alerts.</p>
+                     <span class="text-sm bg-blue-100 text-blue-800 py-1 px-2 rounded">✓ Custom job alerts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 11: Thank You -->
+    <div id="slide-11" class="slide text-center justify-center">
+        <div class="flex flex-col items-center gap-6">
+            <svg class="w-16 h-16 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.424 2.002-1.125l.492-.693a.875.875 0 0 1 1.452 0l.492.693c.469.701 1.196 1.125 2.002 1.125H18a2.25 2.25 0 0 1 2.25 2.25v3.75a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25v-3.75A2.25 2.25 0 0 1 6.633 10.25Z" /><path stroke-linecap="round" stroke-linejoin="round" d="m5.25 7.5.3-1.04a2.25 2.25 0 0 1 2.15-1.71h9.6a2.25 2.25 0 0 1 2.15 1.71l.3 1.04m-13.5 0h13.5" /></svg>
+            <h1 class="text-6xl font-bold text-slate-900">Thank You!</h1>
+            <div class="w-24 h-1 bg-blue-600 rounded-full"></div>
+            <p class="text-3xl text-slate-600">Questions?</p>
+            <div class="mt-4 text-lg text-slate-700 space-y-2">
+                <p>Prashant Verma</p>
+                <p>specpv123@gmail.com</p>
+                <p>linkedin.com/in/prashantverma06</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Navigation -->
+    <div class="footer">CareerSn</div>
+    <div id="slideCounter" class="slide-counter"></div>
+    <button id="prevBtn" class="nav-button left-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+    </button>
+    <button id="nextBtn" class="nav-button right-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideCounter = document.getElementById('slideCounter');
+            const progressBar = document.getElementById('progressBar');
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                
+                // Update progress bar and counter
+                const progress = ((index + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progress}%`;
+                slideCounter.textContent = `${index + 1} / ${totalSlides}`;
+
+                // Hide/show nav buttons
+                prevBtn.style.display = index === 0 ? 'none' : 'flex';
+                nextBtn.style.display = index === totalSlides - 1 ? 'none' : 'flex';
+            }
+
+            function nextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+
+            // Initial setup
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
+
